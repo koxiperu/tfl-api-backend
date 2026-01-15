@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "users")  // "user" is reserved keyword in PostgreSQL
 public class User {
@@ -26,6 +28,7 @@ public class User {
     
     // One Business → Many Listings
     @OneToMany(mappedBy = "business", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<TflListing> listings = new ArrayList<>();
     
     // Empty constructor (required by JPA)
