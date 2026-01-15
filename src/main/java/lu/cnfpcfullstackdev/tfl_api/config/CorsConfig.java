@@ -9,6 +9,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Collections;
 import java.util.List;
 
 @Configuration
@@ -21,10 +22,20 @@ public class CorsConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        logger.info("Configuring CORS. Allowed origins: {}", allowedOrigins);
+        logger.info("Configuring CORS. Allowed origins from config: {}", allowedOrigins);
 
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(allowedOrigins);
+
+        // !!! --- TEMPORARY DEBUGGING STEP --- !!!
+        // This allows all origins. It is INSECURE and must be removed.
+        // We are using this only to confirm if the CORS filter is working at all.
+        logger.warn("!!! INSECURE CORS CONFIGURATION: Allowing all origins for debugging. !!!");
+        configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
+        // !!! --- END TEMPORARY DEBUGGING STEP --- !!!
+
+        // The original, secure configuration is commented out below:
+        // configuration.setAllowedOriginPatterns(allowedOrigins);
+
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept", "Origin", "X-Requested-With"));
         configuration.setExposedHeaders(List.of("Authorization"));
